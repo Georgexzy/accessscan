@@ -1,6 +1,12 @@
 import { rules } from "../lib/rules.js"
 import { GUIDES } from "../content/guides.js"
 
+// Rendered per request. NEXT_PUBLIC_SITE_URL is not known at image build
+// time — baking it produced a sitemap of http://localhost:3000 URLs, and a
+// sitemap of localhost submitted to a search engine is worse than none.
+export const dynamic = "force-dynamic"
+
+
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
 
 export default function sitemap() {

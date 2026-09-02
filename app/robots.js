@@ -1,3 +1,8 @@
+
+// Per request, for the same reason as the sitemap: it advertises the
+// sitemap's absolute URL and must not hardcode the build host.
+export const dynamic = "force-dynamic"
+
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
 
 export default function robots() {
