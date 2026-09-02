@@ -1,0 +1,14 @@
+{
+  "name": "accessscan",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Automated WCAG 2.2 first-pass scanner. States its own limits.",
+  "scripts": {
+    "scan": "node scan.js"
+  },
+  "dependencies": {
+    "axe-core": "^4.13.0",
+    "playwright": "^1.49.0"
+  }
+}
