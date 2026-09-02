@@ -228,8 +228,8 @@ export const GUIDES = {
     gotcha:
       "This is the criterion most likely to be MISSED entirely rather than " +
       "failed loudly, because it arrived in WCAG 2.2 and most audits still " +
-      "target 2.1. Our own scan of 38 large organisations — including several " +
-      "accessibility vendors — found it failing on 10.5% of them. It is also " +
+      "target 2.1. Our own scan of large organisations — several of whom sell " +
+      "accessibility services — found it failing on a meaningful share. It is also " +
       "the one a scanner judges only at the viewport it happened to render.",
     platforms: {
       shopify:

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { rules, ruleById, HEADLINE, ownFinding } from "../../../lib/rules.js"
 import { guideFor } from "../../../content/guides.js"
+import study from "../../../data/study.json" with { type: "json" }
 import { PLATFORM_LABEL } from "../../../lib/platforms.js"
 
 export function generateStaticParams() {
@@ -27,12 +28,13 @@ export default async function RulePage({ params }) {
   const h = HEADLINE[r.id]
   const g = guideFor(r.id)
   const own = ownFinding(r.id)
+  const studyRow = study.rules.find((x) => x.id === r.id)
   const platforms = g ? Object.keys(g.platforms || {}) : []
 
   return (
     <>
       {h && <p className="badge">#{h.rank} most common failure on the web</p>}
-      {!h && own && <p className="badge">Failed by {own.prevalence} of sites we scanned</p>}
+      {!h && own && studyRow && <p className="badge">Failed by {studyRow.pct}% of {study.sites_scanned} sites we scanned</p>}
       <h1>{r.help}</h1>
       <p className="lede">{r.description}.</p>
 
@@ -42,7 +44,7 @@ export default async function RulePage({ params }) {
           <tr><th scope="row">WCAG criteria</th><td>{r.criteria.join(", ") || "—"}</td></tr>
           <tr><th scope="row">Level</th><td>{r.level || "—"}</td></tr>
           {h && <tr><th scope="row">Home pages affected</th><td><strong>{h.prevalence}</strong> — WebAIM Million, Feb 2026</td></tr>}
-          {!h && own && <tr><th scope="row">Sites we found failing</th><td><strong>{own.prevalence}</strong> — <a href="/study">our scan of 38 organisations</a></td></tr>}
+          {!h && own && studyRow && <tr><th scope="row">Sites we found failing</th><td><strong>{studyRow.pct}%</strong> — <a href="/study">our scan of {study.sites_scanned} organisations</a></td></tr>}
           <tr><th scope="row">New in WCAG 2.2</th><td>{r.wcag22 ? "Yes" : "No"}</td></tr>
         </tbody>
       </table>

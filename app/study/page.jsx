@@ -1,13 +1,18 @@
 import study from "../../data/study.json" with { type: "json" }
 import { ruleById } from "../../lib/rules.js"
 
+const TARGET_SIZE = study.rules.find((r) => r.id === "target-size")
+
+// Built from the data file, not typed. Rerunning the scan changes these
+// numbers, and a title that disagrees with the table under it is exactly the
+// sloppiness this whole project is selling the absence of.
 export const metadata = {
-  title: "What actually fails: WCAG 2.2 across 38 major UK and global sites",
+  title: `What actually fails: WCAG 2.2 across ${study.sites_scanned} major UK and global sites`,
   description:
-    "We scanned 38 large organisations — government, NHS, universities, retailers, " +
-    "and accessibility vendors themselves — against WCAG 2.2 A/AA. 57.9% had at " +
-    "least one detected failure, and a WCAG 2.2 criterion missing from the " +
-    "best-known dataset appeared on one site in ten.",
+    `We scanned ${study.sites_scanned} large organisations — government, NHS, universities, ` +
+    `retailers, and accessibility vendors themselves — against WCAG 2.2 A/AA. ` +
+    `${study.pct_with_failures}% had at least one detected failure, and a WCAG 2.2 criterion ` +
+    `missing from the best-known dataset failed on ${TARGET_SIZE?.pct}% of them.`,
 }
 
 const TOP = study.rules.slice(0, 12)
@@ -39,8 +44,7 @@ export default function Study() {
       <h2>The finding worth your attention</h2>
       <p>
         <strong><code>target-size</code> — WCAG 2.5.8, added in WCAG 2.2 —
-        failed on {study.rules.find((r) => r.id === "target-size")?.pct}% of
-        these sites.</strong> It does not appear in WebAIM&apos;s famous six,
+        failed on {TARGET_SIZE?.pct}% of these sites.</strong> It does not appear in WebAIM&apos;s famous six,
         because their methodology centres on WCAG 2.0 and 2.1. It requires
         pointer targets to be at least 24×24 CSS pixels, or spaced far enough
         apart to compensate — and it is failed by small icon buttons, tight
