@@ -6,6 +6,14 @@
 npx accessscan https://your-site.com
 ```
 
+> **Not on npm yet.** Until it is published, run it from a clone:
+> ```bash
+> git clone https://github.com/Georgexzy/accessscan && cd accessscan
+> npm install
+> node cli.js https://your-site.com
+> ```
+> The GitHub Action below works today and needs none of this.
+
 ```
 https://news.ycombinator.com/  —  HTTP 200, 2153ms
   [serious ] color-contrast × 238  Elements must meet minimum color contrast ratio thresholds
@@ -57,7 +65,8 @@ it were sued anyway.
 ## Usage
 
 ```bash
-npx accessscan <url> [url...] [options]
+node cli.js <url> [url...] [options]      # from a clone
+npx accessscan <url> [url...] [options]   # once published to npm
 
   --fail-on <level>   critical | serious | moderate | minor | any | none
                       default: serious

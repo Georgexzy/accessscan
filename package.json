@@ -1,7 +1,7 @@
 {
   "name": "accessscan",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -12,8 +12,39 @@
   },
   "dependencies": {
     "axe-core": "^4.13.0",
+    "playwright": "1.49.0"
+  },
+  "description": "WCAG 2.2 accessibility scanner that reports what it could not check.",
+  "bin": {
+    "accessscan": "./cli.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Georgexzy/accessscan.git"
+  },
+  "homepage": "https://github.com/Georgexzy/accessscan#readme",
+  "keywords": [
+    "wcag",
+    "accessibility",
+    "a11y",
+    "axe-core",
+    "playwright",
+    "ci",
+    "audit",
+    "wcag22"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "scan.js",
+    "cli.js",
+    "lib/safe-url.js",
+    "README.md"
+  ],
+  "devDependencies": {
     "next": "^15.1.0",
-    "playwright": "1.49.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

@@ -11,7 +11,10 @@ ENV NODE_ENV=production \
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+# All dependencies, not --omit=dev: next and react are devDependencies now,
+# because they build the WEBSITE and are no part of the CLI that npm users
+# install. The image builds the website, so it needs them.
+RUN npm ci
 
 COPY . .
 RUN node build-rules.js && npx next build
