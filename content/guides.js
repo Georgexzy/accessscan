@@ -198,6 +198,52 @@ export const GUIDES = {
     },
   },
 
+  "target-size": {
+    whatItLooksLike:
+      "A row of small social icons in a footer. A close X on a modal that is " +
+      "16 pixels square. Pagination links sitting shoulder to shoulder. A " +
+      "table with an edit and a delete icon two pixels apart. Almost always it " +
+      "is an icon that looked balanced on a designer's 27-inch monitor and is " +
+      "being tapped with a thumb.",
+    whyItMatters:
+      "A finger pad is about 10mm across — roughly 40 CSS pixels. Anything much " +
+      "smaller is a guess, and a wrong guess next to a delete button is " +
+      "destructive rather than merely annoying. It hits hardest for people with " +
+      "tremor, limited dexterity, or anyone using a phone one-handed on a " +
+      "moving train, which is to say most people some of the time.",
+    theRule:
+      "WCAG 2.5.8 Target Size (Minimum), level AA, new in WCAG 2.2. Pointer " +
+      "targets must be at least 24 by 24 CSS pixels. There are real exceptions: " +
+      "a target smaller than that passes if a 24px circle centred on it does " +
+      "not overlap the circle of any other target — the SPACING exception — and " +
+      "also if it is inline in a sentence, if the size is browser-determined, " +
+      "or if an equivalent control of adequate size exists elsewhere on the page.",
+    howToFix: [
+      "Make the target 24x24 CSS pixels. This is usually padding, not a bigger icon — the icon can stay 16px inside a 24px hit area, so nothing about the design has to change visually.",
+      "If you cannot grow it, buy the spacing exception instead: leave at least 24px between the CENTRES of adjacent targets. Two 20px buttons 28px apart pass; the same two buttons touching do not.",
+      "Do not use `transform: scale()` to enlarge a target. The hit area comes from layout, and a scaled element keeps the box it started with.",
+      "Watch inline links in prose — those are exempt, so do not add padding that breaks your line height chasing a failure that is not one.",
+      "Check it at mobile widths as well as desktop. A nav that passes at 1280px often collapses into a tight icon row at 375px, and the scanner will only tell you about the viewport it rendered.",
+    ],
+    gotcha:
+      "This is the criterion most likely to be MISSED entirely rather than " +
+      "failed loudly, because it arrived in WCAG 2.2 and most audits still " +
+      "target 2.1. Our own scan of 38 large organisations — including several " +
+      "accessibility vendors — found it failing on 10.5% of them. It is also " +
+      "the one a scanner judges only at the viewport it happened to render.",
+    platforms: {
+      shopify:
+        "Theme header icon rows — search, account, cart — are the usual failure, and they are in header.liquid or an icon snippet rather than in the theme editor. Add padding to the anchor, not width to the SVG, or you will scale the glyph as well as the target.",
+      wordpress:
+        "Block themes set button padding in theme.json under styles.elements.button. Social-icon blocks are the common offender and take their size from a block-level setting rather than from your CSS.",
+      tailwind:
+        "`p-1` on a 16px icon gives a 24px box and clears the rule; `p-0.5` gives 20px and does not. For icon buttons the reliable pattern is a fixed `size-6` (24px) flex container with the icon centred inside, rather than padding that changes with the icon.",
+      react:
+        "Icon-button components usually take a `size` prop that sets the ICON, not the hit area. Check what the rendered element measures, not what the prop says — a `size=\"sm\"` icon button is frequently a 20px target.",
+      wix: "Wix elements are absolutely positioned, so targets can end up overlapping their neighbours' 24px zones even when each is individually large enough. Check spacing in the editor at mobile breakpoint, which Wix lays out separately.",
+    },
+  },
+
   "html-has-lang": {
     whatItLooksLike:
       "<html> with no lang attribute. It is invisible, it breaks nothing " +

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { rules, ruleById, HEADLINE } from "../../../lib/rules.js"
+import { rules, ruleById, HEADLINE, ownFinding } from "../../../lib/rules.js"
 import { guideFor } from "../../../content/guides.js"
 import { PLATFORM_LABEL } from "../../../lib/platforms.js"
 
@@ -26,11 +26,13 @@ export default async function RulePage({ params }) {
   if (!r) notFound()
   const h = HEADLINE[r.id]
   const g = guideFor(r.id)
+  const own = ownFinding(r.id)
   const platforms = g ? Object.keys(g.platforms || {}) : []
 
   return (
     <>
       {h && <p className="badge">#{h.rank} most common failure on the web</p>}
+      {!h && own && <p className="badge">Failed by {own.prevalence} of sites we scanned</p>}
       <h1>{r.help}</h1>
       <p className="lede">{r.description}.</p>
 
@@ -40,12 +42,20 @@ export default async function RulePage({ params }) {
           <tr><th scope="row">WCAG criteria</th><td>{r.criteria.join(", ") || "—"}</td></tr>
           <tr><th scope="row">Level</th><td>{r.level || "—"}</td></tr>
           {h && <tr><th scope="row">Home pages affected</th><td><strong>{h.prevalence}</strong> — WebAIM Million, Feb 2026</td></tr>}
+          {!h && own && <tr><th scope="row">Sites we found failing</th><td><strong>{own.prevalence}</strong> — <a href="/study">our scan of 38 organisations</a></td></tr>}
           <tr><th scope="row">New in WCAG 2.2</th><td>{r.wcag22 ? "Yes" : "No"}</td></tr>
         </tbody>
       </table>
 
       {g ? (
         <>
+          {own && (
+            <>
+              <h2>Why this one is easy to miss</h2>
+              <p>{own.note}</p>
+              <p><a href="/study">See the data →</a></p>
+            </>
+          )}
           <h2>What it looks like</h2>
           <p>{g.whatItLooksLike}</p>
 
