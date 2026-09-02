@@ -1,4 +1,4 @@
-name: "AccessScan — WCAG checks"
+name: "AccessScan WCAG Checks"
 description: >-
   Run first-pass WCAG 2.2 A/AA checks against one or more URLs and fail the
   build on real blockers. Reports what it could not check, and never claims
