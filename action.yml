@@ -1,0 +1,81 @@
+name: "AccessScan — WCAG checks"
+description: >-
+  Run first-pass WCAG 2.2 A/AA checks against one or more URLs and fail the
+  build on real blockers. Reports what it could not check, and never claims
+  conformance.
+author: "AccessScan"
+branding:
+  icon: "eye"
+  color: "green"
+
+inputs:
+  urls:
+    description: "URLs to scan, whitespace or newline separated."
+    required: true
+  fail-on:
+    description: >-
+      Minimum impact that fails the build: critical, serious, moderate, minor,
+      any, or none. Defaults to `serious` — the band where a user is actually
+      blocked. A gate that fails on every finding is a gate teams delete.
+    required: false
+    default: "serious"
+  annotations:
+    description: "Emit GitHub annotations for each finding (true/false)."
+    required: false
+    default: "true"
+
+outputs:
+  findings:
+    description: "Number of findings at or above the threshold."
+    value: ${{ steps.run.outputs.findings }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+
+    - name: Install AccessScan
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm ci --omit=dev --ignore-scripts || npm install --omit=dev --ignore-scripts
+
+    # Separate from npm install because the browser is the slow part and is the
+    # thing worth caching in a runner; --with-deps pulls the system libraries a
+    # bare ubuntu-latest image does not ship.
+    - name: Install Chromium
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npx playwright install --with-deps chromium
+
+    - name: Scan
+      id: run
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        INPUT_URLS: ${{ inputs.urls }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_ANNOTATIONS: ${{ inputs.annotations }}
+      run: |
+        set -o pipefail
+        # Word-splitting is deliberate: the input is a whitespace/newline list
+        # of URLs, and URLs contain no spaces.
+        read -r -a URL_ARR <<< "$(echo "$INPUT_URLS" | tr '\n' ' ')"
+        ARGS=(--fail-on "$INPUT_FAIL_ON")
+        [ "$INPUT_ANNOTATIONS" = "true" ] && ARGS+=(--github)
+        set +e
+        node cli.js "${URL_ARR[@]}" "${ARGS[@]}" | tee scan-output.txt
+        code=${PIPESTATUS[0]}
+        set -e
+        n=$(grep -oE '[0-9]+ finding\(s\)' scan-output.txt | tail -1 | grep -oE '[0-9]+' || echo 0)
+        echo "findings=$n" >> "$GITHUB_OUTPUT"
+        {
+          echo "## AccessScan"
+          echo
+          echo '```'
+          cat scan-output.txt
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+        exit $code

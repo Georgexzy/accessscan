@@ -1,0 +1,22 @@
+# Example: run WCAG checks on every pull request.
+#
+# Copy this into your own repository as .github/workflows/accessibility.yml
+# and point `urls` at whatever the PR should be judged on — a preview
+# deployment, a staging URL, or a production page.
+name: Accessibility
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  wcag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./ # replace with: your-org/accessscan@v1
+        with:
+          urls: |
+            https://example.com
+            https://example.com/pricing
+          fail-on: serious
