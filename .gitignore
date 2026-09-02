@@ -1,2 +1,6 @@
 node_modules/
+.next/
 *.log
+# Local config. .env.example is the tracked template; this is per-machine and
+# is where a real secret would land the day one is needed.
+.env
