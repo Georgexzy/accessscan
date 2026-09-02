@@ -1,0 +1,47 @@
+# Publish to npm without a token and without an OTP prompt.
+#
+# npm disabled new TOTP setups in October 2025 and is moving publishing to
+# trusted publishing (OIDC): GitHub mints a short-lived credential scoped to
+# this one workflow run, npm verifies it came from this repo, and no long-lived
+# secret exists to leak. Bypass-2FA tokens still work until January 2027; this
+# is where it all ends up anyway, so it may as well start here.
+#
+# ONE-TIME SETUP on npmjs.com, after the package exists:
+#   Package → Settings → Trusted Publisher → GitHub Actions
+#   Organization/user: Georgexzy   Repository: accessscan
+#   Workflow filename: publish.yml
+#
+# The first publish still has to come from a logged-in machine, because the
+# package must exist before it can have a trusted publisher. After that, this
+# takes over and a release publishes itself.
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # The whole point: this is what lets GitHub mint the OIDC token npm
+      # checks. Without it the publish falls back to needing a secret.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      # npm >= 11.5.1 is required for trusted publishing. ubuntu-latest ships
+      # an older npm with Node 20, so this is not optional.
+      - run: npm install -g npm@latest
+
+      - run: npm ci --include=dev
+
+      # Publish what the tests would run, not what happens to be on disk.
+      - run: node cli.js https://example.com --fail-on any
+      - run: npm publish --provenance --access public
