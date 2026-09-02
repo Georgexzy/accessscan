@@ -30,11 +30,10 @@ import { chromium } from "playwright"
 // injection into the page) is only reachable through the default export.
 import axeCore from "axe-core"
 const axeSource = axeCore.source
-import { readFileSync } from "node:fs"
-
-const AXE_VERSION = JSON.parse(
-  readFileSync(new URL("./node_modules/axe-core/package.json", import.meta.url)),
-).version
+// axe reports its own version. Reading it out of package.json instead meant a
+// filesystem path resolved relative to this module, which survives `node
+// scan.js` and does not survive being bundled into a Next route.
+const AXE_VERSION = axeCore.version
 
 // A/AA only. AAA is not the legal standard anywhere we would sell, and mixing
 // it in inflates the count with findings nobody is obliged to fix — which is
@@ -60,6 +59,15 @@ export async function scan(url, { timeoutMs = 30000 } = {}) {
   })
   try {
     const context = await browser.newContext({
+      // Inject axe past the page's Content-Security-Policy.
+      //
+      // Not optional. A strict script-src is exactly what a well-run
+      // government or enterprise site ships — gov.uk refuses the injected
+      // script outright — so without this the scanner fails on precisely the
+      // organisations that have a legal duty to be accessible and a budget to
+      // pay for help. It relaxes CSP inside this throwaway browser context
+      // only; nothing about the scanned site is altered.
+      bypassCSP: true,
       // Identify honestly. A scanner that hides what it is cannot complain
       // when it is blocked, and a site owner reading their logs deserves to
       // know who looked and why.
