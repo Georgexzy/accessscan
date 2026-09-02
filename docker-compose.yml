@@ -8,7 +8,16 @@ services:
       # submitted to Google is worse than no sitemap.
       NEXT_PUBLIC_SITE_URL: ${SITE_URL:?set SITE_URL in .env}
     ports:
+      # Kept for local checks without going through the tunnel. Not how public
+      # traffic arrives — that comes via nginx over the shared network below.
       - "127.0.0.1:3200:3000"
+    networks:
+      - default
+      # nginx publishes nothing to the host and can only reach containers on its
+      # own network, so this joins it rather than exposing another host port.
+      # cloudflared shares nginx's namespace, which is why the tunnel can then
+      # route a hostname here without any port being open on the machine.
+      - ficatlas_public
     # A scan holds a browser open. Without a ceiling one busy minute competes
     # with the FicAtlas database on the same host.
     mem_limit: 2g
@@ -19,3 +28,9 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+networks:
+  default:
+  ficatlas_public:
+    external: true
+    name: ficatlas-public_default
