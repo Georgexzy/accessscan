@@ -1,8 +1,9 @@
 name: "AccessScan WCAG Checks"
-description: >-
-  Run first-pass WCAG 2.2 A/AA checks against one or more URLs and fail the
-  build on real blockers. Reports what it could not check, and never claims
-  conformance.
+# 125 characters is the Marketplace ceiling and this is 119. It is also the
+# listing's search text, so it leads with the words someone actually types
+# — WCAG, accessibility, CI — while still refusing the claim the whole project
+# refuses.
+description: "WCAG 2.2 accessibility checks in CI. Fails on real blockers, reports what it could not check, never claims conformance."
 author: "AccessScan"
 branding:
   icon: "eye"
