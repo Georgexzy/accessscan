@@ -13,6 +13,8 @@ export default function sitemap() {
   return [
     { url: `${SITE}/`, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/fix`, changeFrequency: "weekly", priority: 0.9 },
+    // Original data. The one page here nobody else can publish.
+    { url: `${SITE}/study`, changeFrequency: "monthly", priority: 0.9 },
     ...rules.map((r) => ({
       url: `${SITE}/fix/${r.id}`,
       changeFrequency: "monthly",

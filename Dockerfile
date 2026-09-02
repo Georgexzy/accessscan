@@ -11,10 +11,15 @@ ENV NODE_ENV=production \
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-# All dependencies, not --omit=dev: next and react are devDependencies now,
-# because they build the WEBSITE and are no part of the CLI that npm users
-# install. The image builds the website, so it needs them.
-RUN npm ci
+# --include=dev, and the flag is load-bearing rather than decorative.
+#
+# next, react and react-dom are devDependencies: they build the WEBSITE and are
+# no part of the CLI that npm users install. But ENV NODE_ENV=production above
+# makes npm omit devDependencies by DEFAULT, with no warning — so a plain
+# `npm ci` here installed everything except the framework, and `next build`
+# then failed claiming Next.js was "installed globally rather than as a project
+# dependency", which is a confusing way to say it was not installed at all.
+RUN npm ci --include=dev
 
 COPY . .
 RUN node build-rules.js && npx next build

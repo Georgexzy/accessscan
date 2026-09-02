@@ -60,6 +60,16 @@ export default function Home() {
         Source: <a href="https://webaim.org/projects/million/">The WebAIM Million</a>,
         February 2026, 1,000,000 home pages.
       </p>
+
+      <h2>What we found ourselves</h2>
+      <p>
+        We scanned 38 large UK and global organisations — government, the NHS,
+        universities, national charities, and the accessibility vendors
+        themselves — against WCAG 2.2. One criterion that WebAIM&apos;s dataset
+        does not measure failed on one site in ten, and it is the one the
+        European Accessibility Act references.
+      </p>
+      <p><a href="/study">Read the study →</a></p>
     </>
   )
 }

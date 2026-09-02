@@ -1,0 +1,132 @@
+{
+  "generated": "2026-09-02T17:50:59.109Z",
+  "engine": "axe-core 4.13, WCAG 2.2 A/AA",
+  "sites_attempted": 38,
+  "sites_scanned": 38,
+  "sites_failed_to_load": 0,
+  "sites_with_zero_detected_failures": 16,
+  "pct_with_failures": 57.9,
+  "median_rules_failed_per_site": 1,
+  "mean_elements_affected_per_site": 12.3,
+  "rules": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "sites": 9,
+      "pct": 23.7,
+      "elements": 293
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "sites": 6,
+      "pct": 15.8,
+      "elements": 38
+    },
+    {
+      "id": "target-size",
+      "impact": "serious",
+      "sites": 4,
+      "pct": 10.5,
+      "elements": 49
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "sites": 3,
+      "pct": 7.9,
+      "elements": 44
+    },
+    {
+      "id": "list",
+      "impact": "serious",
+      "sites": 3,
+      "pct": 7.9,
+      "elements": 5
+    },
+    {
+      "id": "aria-required-children",
+      "impact": "critical",
+      "sites": 3,
+      "pct": 7.9,
+      "elements": 6
+    },
+    {
+      "id": "aria-allowed-attr",
+      "impact": "critical",
+      "sites": 3,
+      "pct": 7.9,
+      "elements": 6
+    },
+    {
+      "id": "button-name",
+      "impact": "critical",
+      "sites": 2,
+      "pct": 5.3,
+      "elements": 2
+    },
+    {
+      "id": "html-has-lang",
+      "impact": "serious",
+      "sites": 2,
+      "pct": 5.3,
+      "elements": 2
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 1
+    },
+    {
+      "id": "aria-required-parent",
+      "impact": "critical",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 9
+    },
+    {
+      "id": "listitem",
+      "impact": "serious",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 1
+    },
+    {
+      "id": "meta-refresh",
+      "impact": "critical",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 1
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "impact": "serious",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 6
+    },
+    {
+      "id": "scrollable-region-focusable",
+      "impact": "serious",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 1
+    },
+    {
+      "id": "meta-viewport",
+      "impact": "moderate",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 1
+    },
+    {
+      "id": "link-in-text-block",
+      "impact": "serious",
+      "sites": 1,
+      "pct": 2.6,
+      "elements": 1
+    }
+  ]
+}

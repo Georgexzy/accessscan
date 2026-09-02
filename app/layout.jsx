@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <style>{CSS}</style>
         <header className="site">
           <a className="brand" href="/">AccessScan</a>
-          <nav><a href="/fix">Fix guides</a></nav>
+          <nav><a href="/study">Study</a> &nbsp; <a href="/fix">Fix guides</a></nav>
         </header>
         <main>{children}</main>
         <footer className="site">
